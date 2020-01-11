@@ -5,7 +5,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 export function Home() {
-	const [message, setMessage] = useState([
+	const [state, setState] = useState([
 		"Cras justo odio",
 		"Dapibus ac facilisis in",
 		"Morbi leo risus",
@@ -13,27 +13,25 @@ export function Home() {
 		"Vestibulum at eros"
 	]);
 
-	const [newMessage, setNewMessage] = useState("");
-
 	function addMessage(e) {
-		//console.log(e.keyCode);
+		console.log(e.keyCode);
 		if (e.target.value != "" && e.keyCode == 13) {
-			let message = {
+			let task = {
 				userId: 1,
 				id: 1,
 				title: e.target.value,
 				completed: false
 			};
-			setMessage(message.concat(message));
+			setState(state.concat(task));
 			e.target.value = "";
 		}
 	}
 
 	function deleteMessage(i) {
 		//console.log(i);
-		const mess = message.slice();
+		const mess = state.slice();
 		mess.splice(i, 1);
-		setMessage(mess);
+		setState(mess);
 	}
 
 	function showDelete(i) {
@@ -49,7 +47,7 @@ export function Home() {
 	function getToDos() {
 		fetch("https://jsonplaceholder.typicode.com/todos/")
 			.then(response => response.json())
-			.then(json => setMessage(json));
+			.then(json => setState(json));
 	}
 
 	useEffect(() => {
@@ -58,6 +56,7 @@ export function Home() {
 
 	return (
 		<div className="card">
+			<h1>TO DO LIST</h1>
 			<div className="card-body">
 				<div className="form-group">
 					<input
@@ -70,8 +69,8 @@ export function Home() {
 					/>
 				</div>
 				<ul className="list-group">
-					{message.length > 0 &&
-						message.map((item, i) => {
+					{state.length > 0 &&
+						state.map((item, i) => {
 							return (
 								<li
 									key={i}
@@ -89,8 +88,8 @@ export function Home() {
 						})}
 				</ul>
 				<p className="card-text">
-					{message.length > 0
-						? message.length + " messages left."
+					{state.length > 0
+						? state.length + " messages left."
 						: "You don't have messages"}
 				</p>
 			</div>
@@ -98,35 +97,31 @@ export function Home() {
 	);
 }
 
-
-
 export class Home2 extends React.Component {
-	/*constructor={
+	constructor() {
 		super();
-		this.state={}
-	}*/
-
-	state = {
-		message: [
-			"Cras justo odio",
-			"Dapibus ac facilisis in",
-			"Morbi leo risus",
-			"Porta ac consectetur ac",
-			"Vestibulum at eros"
-		]
-	};
+		this.state = {
+			message: [
+				"Cras justo odio",
+				"Dapibus ac facilisis in",
+				"Morbi leo risus",
+				"Porta ac consectetur ac",
+				"Vestibulum at eros"
+			]
+		};
+	}
 
 	addMessage(e) {
 		//console.log(e.keyCode);
 		if (e.target.value != "" && e.keyCode == 13) {
-			let message = {
+			let task = {
 				userId: 1,
 				id: 1,
 				title: e.target.value,
 				completed: false
 			};
 			this.setState({
-				message: this.state.message.concat(message)
+				message: this.state.message.concat(task)
 			});
 			e.target.value = "";
 		}
@@ -158,9 +153,11 @@ export class Home2 extends React.Component {
 	componentDidMount() {
 		this.getToDos();
 	}
+
 	render() {
 		return (
 			<div className="card">
+				<h1>TO DO LIST</h1>
 				<div className="card-body">
 					<div className="form-group">
 						<input
